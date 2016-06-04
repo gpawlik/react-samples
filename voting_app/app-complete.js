@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-
+/*
 const ProductList = React.createClass({
   getInitialState: function () {
     return {
@@ -102,3 +102,4 @@ ReactDOM.render(
   <ProductList />,
   document.getElementById('content')
 );
+*/
