@@ -4,17 +4,19 @@
 const ProductList = React.createClass({
     getInitialState: function () { // lifecycle method
         return {
-            products: []
+            products: [],
+            sortAsc: true
         }
     },
     componentDidMount: function () { // lifecycle method
-        this.updateState();
+        this.updateProducts();
     },
-    updateState: function () {
+    updateProducts: function (toggle) {
+        const newSortState = toggle ? !this.state.sortAsc : this.state.sortAsc;
         const products = Data.sort((a, b) => {
-            return b.votes - a.votes;
+            return newSortState ? (a.votes - b.votes) : (b.votes - a.votes);
         });
-        this.setState({ products: products });        
+        this.setState({ products: products, sortAsc: newSortState });        
     },
     handleProductUpVote: function (productId) {
         Data.forEach((el) => {
@@ -22,7 +24,7 @@ const ProductList = React.createClass({
                 el.votes = el.votes + 1;
                 return;
             }
-            this.updateState();
+            this.updateProducts();
         });
     },
     handleProductDownVote: function (productId) {
@@ -31,8 +33,11 @@ const ProductList = React.createClass({
                 el.votes = el.votes - 1;
                 return;
             }
-            this.updateState();
+            this.updateProducts();
         });
+    },
+    handleToggleSortDirection: function () {
+        this.updateProducts(true);         
     },
     render: function () { // lifecycle method
         const products = this.state.products.map((product) => {
@@ -53,6 +58,7 @@ const ProductList = React.createClass({
         });
         return (
             <div className='ui items'>
+                <button onClick={this.handleToggleSortDirection}>Toggle sort direction</button>
                 {products}
             </div>
         );
