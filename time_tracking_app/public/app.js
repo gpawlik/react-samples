@@ -3,10 +3,10 @@ const TimersDashboard = React.createClass({
         return (
             <div className='ui three column centered grid'>
                 <div className='column'>
-                <EditableTimersList />
-                <ToggleableTimerForm
-                    isOpen={true}
-                />
+                    <EditableTimersList />
+                    <ToggleableTimerForm
+                        isOpen={false}
+                    />
                 </div>
             </div>
         );
@@ -29,7 +29,7 @@ const EditableTimersList = React.createClass({
                     project='World Domination'
                     elapsed='3890985'
                     runningSince={null}
-                    editFormOpen={true}
+                    editFormOpen={false}
                 />
             </div>            
         );
@@ -120,7 +120,7 @@ const Timer = React.createClass({
                     </div>
                     <div className='center aligned description'>
                         <h2>
-                        {elapsedString}
+                            {elapsedString}
                         </h2>
                     </div>
                     <div className='extra content'>
