@@ -19,6 +19,15 @@ const TimersDashboard = React.createClass({
             ],
         };
     },
+    handleCreateFormSubmit: function (timer) {
+        this.createTimer(timer);
+    },
+    createTimer: function (timer) {
+        const t = helpers.newTimer(timer);
+        this.setState({
+            timers: this.state.timers.concat(t),
+        });
+    },
     render: function () {
         return (
             <div className='ui three column centered grid'>
@@ -26,7 +35,7 @@ const TimersDashboard = React.createClass({
                     <EditableTimersList 
                         timers={this.state.timers}/>
                     <ToggleableTimerForm
-                        isOpen={false}
+                        onFormSubmit={this.handleCreateFormSubmit}
                     />
                 </div>
             </div>
