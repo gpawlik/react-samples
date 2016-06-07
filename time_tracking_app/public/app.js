@@ -28,6 +28,11 @@ const TimersDashboard = React.createClass({
     handleDeleteTimer: function (id) {
         this.deleteTimer(id);
     },
+    handleTimerStart: function (id) {
+        var xxx = setInterval(() => {
+            this.increaseTimer(id);
+        }, 1000);        
+    },
     createTimer: function (timer) {
         const t = helpers.newTimer(timer);
         this.setState({
@@ -48,8 +53,21 @@ const TimersDashboard = React.createClass({
             }),
         });
     },
+    increaseTimer: function (id) {
+        console.log('increasing or what?');
+        this.setState({
+            timers: this.state.timers.map((timer) => {
+                if (timer.id === id) {
+                    return Object.assign({}, timer, {
+                        elapsed: timer.elapsed + 1000
+                    });
+                } else {
+                    return timer;
+                }
+            }),
+        });
+    },
     deleteTimer: function (timerId) {
-        console.log('got up?', timerId);
         this.setState({
             timers: this.state.timers.filter(timer => timer.id !== timerId),
         });        
@@ -62,6 +80,7 @@ const TimersDashboard = React.createClass({
                         timers={this.state.timers}
                         onFormSubmit={this.handleEditFormSubmit}
                         onDeleteTimer={this.handleDeleteTimer}
+                        onStartTimer={this.handleTimerStart}
                         />
                     <ToggleableTimerForm
                         onFormSubmit={this.handleCreateFormSubmit}
@@ -85,6 +104,7 @@ const EditableTimersList = React.createClass({
                     runningSince={timer.runningSince}
                     onFormSubmit={this.props.onFormSubmit}
                     onDeleteTimer={this.props.onDeleteTimer}
+                    onStartTimer={this.props.onStartTimer}
                 />
             );
         });
@@ -107,15 +127,15 @@ const EditableTimer = React.createClass({
     handleEditClick: function () {
         this.openForm();
     },
-    handleDeleteClick: function () {
-        this.props.onDeleteTimer(this.props.id);
-    },
     handleFormClose: function () {
         this.closeForm();
     },
     handleSubmit: function (timer) {
         this.props.onFormSubmit(timer);
         this.closeForm();
+    },
+    handleStartTimer: function () {
+        this.props.onStartTimer(this.props.id);
     },
     closeForm: function () {
         this.setState({ editFormOpen: false });
@@ -143,7 +163,8 @@ const EditableTimer = React.createClass({
                     elapsed={this.props.elapsed}
                     runningSince={this.props.runningSince}
                     onEditClick={this.handleEditClick}
-                    onDeleteClick={this.handleDeleteClick}
+                    onDeleteClick={this.props.onDeleteTimer}
+                    onStartTimer={this.handleStartTimer}
                 />
             );
         }
@@ -227,8 +248,17 @@ const ToggleableTimerForm = React.createClass({
 });
 
 const Timer = React.createClass({
+    componentDidMount: function () {
+        this.forceUpdateInterval = setInterval(() => this.forceUpdate(), 50);
+    },
+    componentWillUnmount: function () {
+        clearInterval(this.forceUpdateInterval);
+    },   
+    handleDeleteClick: function () {
+        this.props.onDeleteClick(this.props.id);
+    }, 
     render: function () {
-        const elapsedString = helpers.renderElapsedString(this.props.elapsed);
+        const elapsedString = helpers.renderElapsedString(this.props.elapsed, this.props.runningSince);
         return (
             <div className='ui centered card'>
                 <div className='content'>
@@ -252,12 +282,14 @@ const Timer = React.createClass({
                         </span>
                         <span 
                             className='right floated trash icon'
-                            onClick={this.props.onDeleteClick}>
+                            onClick={this.handleDeleteClick}>
                             <i className='trash icon'></i>
                         </span>
                     </div>
                 </div>
-                <div className='ui bottom attached blue basic button'>
+                <div 
+                    className='ui bottom attached blue basic button'
+                    onClick={this.props.onStartTimer}>
                     Start
                 </div>
             </div>
