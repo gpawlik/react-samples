@@ -154,7 +154,7 @@ const EditableTimer = React.createClass({
     getInitialState: function () {
         return (
             {
-                editFormOpen: false,
+                editFormOpen: false
             }
         );
     },    
@@ -185,7 +185,7 @@ const EditableTimer = React.createClass({
                     title={this.props.title}
                     project={this.props.project}
                     onFormSubmit={this.handleSubmit}
-                    onFormClose={this.handleFormClose}
+                    onFormClose={this.handleFormClose}                    
                 />
             );
         } else {
@@ -283,6 +283,13 @@ const ToggleableTimerForm = React.createClass({
 });
 
 const Timer = React.createClass({
+    getInitialState: function () {
+        return (
+            {
+                isSettingsVisible: true
+            }
+        );
+    },     
     // https://facebook.github.io/react/docs/component-specs.html
     componentDidMount: function () {
         this.forceUpdateInterval = setInterval(() => this.forceUpdate(), 50);
@@ -299,10 +306,19 @@ const Timer = React.createClass({
     handleStopClick: function () {
         this.props.onStopClick(this.props.id);
     }, 
+    handleMouseEnter: function () {
+        console.log('entered?');
+        this.setState({ isSettingsVisible: true });
+    },
+    handleMouseLeave: function () {
+        this.setState({ isSettingsVisible: false });
+    },    
     render: function () {
         const elapsedString = helpers.renderElapsedString(this.props.elapsed, this.props.runningSince);
         return (
-            <div className='ui centered card'>
+            <div className='ui centered card'
+                onMouseEnter={this.handleMouseEnter}
+                onMouseLeave={this.handleMouseLeave}>
                 <div className='content'>
                     <div className='header'>
                         {this.props.title}
@@ -315,19 +331,9 @@ const Timer = React.createClass({
                             {elapsedString}
                         </h2>
                     </div>
-                    <div className='extra content'>
-                        <span 
-                            className='right floated edit icon'
-                            onClick={this.props.onEditClick}
-                            >                        
-                            <i className='edit icon'></i>
-                        </span>
-                        <span 
-                            className='right floated trash icon'
-                            onClick={this.handleDeleteClick}>
-                            <i className='trash icon'></i>
-                        </span>
-                    </div>
+                    <TimerUpdateArea 
+                        isSettingsVisible={this.state.isSettingsVisible}
+                        />
                 </div>
                 <TimerActionButton
                     timerIsRunning={!!this.props.runningSince}
@@ -359,6 +365,31 @@ const TimerActionButton = React.createClass({
                     Start
                 </div>
             );
+        }
+    },
+});
+
+const TimerUpdateArea = React.createClass({
+    render: function () {
+        if (this.props.isSettingsVisible) {
+            return (
+                <div className='extra content'>
+                    <span 
+                        className='right floated edit icon'
+                        onClick={this.props.onEditClick}
+                        >                        
+                        <i className='edit icon'></i>
+                    </span>
+                    <span 
+                        className='right floated trash icon'
+                        onClick={this.handleDeleteClick}>
+                        <i className='trash icon'></i>
+                    </span>
+                </div>
+            );
+        }
+        else {
+            return (<div className='extra content'></div>);
         }
     },
 });
