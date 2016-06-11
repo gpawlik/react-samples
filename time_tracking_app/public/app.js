@@ -282,14 +282,7 @@ const ToggleableTimerForm = React.createClass({
     }
 });
 
-const Timer = React.createClass({
-    getInitialState: function () {
-        return (
-            {
-                isSettingsVisible: true
-            }
-        );
-    },     
+const Timer = React.createClass({    
     // https://facebook.github.io/react/docs/component-specs.html
     componentDidMount: function () {
         this.forceUpdateInterval = setInterval(() => this.forceUpdate(), 50);
@@ -331,9 +324,19 @@ const Timer = React.createClass({
                             {elapsedString}
                         </h2>
                     </div>
-                    <TimerUpdateArea 
-                        isSettingsVisible={this.state.isSettingsVisible}
-                        />
+                    <div className='extra content'>
+                        <span 
+                            className='right floated edit icon'
+                            onClick={this.props.onEditClick}
+                            >                        
+                            <i className='edit icon'></i>
+                        </span>
+                        <span 
+                            className='right floated trash icon'
+                            onClick={this.handleDeleteClick}>
+                            <i className='trash icon'></i>
+                        </span>
+                    </div>
                 </div>
                 <TimerActionButton
                     timerIsRunning={!!this.props.runningSince}
@@ -365,31 +368,6 @@ const TimerActionButton = React.createClass({
                     Start
                 </div>
             );
-        }
-    },
-});
-
-const TimerUpdateArea = React.createClass({
-    render: function () {
-        if (this.props.isSettingsVisible) {
-            return (
-                <div className='extra content'>
-                    <span 
-                        className='right floated edit icon'
-                        onClick={this.props.onEditClick}
-                        >                        
-                        <i className='edit icon'></i>
-                    </span>
-                    <span 
-                        className='right floated trash icon'
-                        onClick={this.handleDeleteClick}>
-                        <i className='trash icon'></i>
-                    </span>
-                </div>
-            );
-        }
-        else {
-            return (<div className='extra content'></div>);
         }
     },
 });
