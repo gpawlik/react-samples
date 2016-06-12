@@ -1,23 +1,19 @@
 const TimersDashboard = React.createClass({
     getInitialState: function () {
         return {
-            timers: [
-                {
-                    title: "Practice squat",
-                    project: "Gym Chores",
-                    id: uuid.v4(), // library to create unique ID's
-                    elapsed: 5456099,
-                    runningSince: Date.now(),
-                },
-                {
-                    title: "Bake squash",
-                    project: "Kitchen Chores",
-                    id: uuid.v4(), // library to create unique ID's
-                    elapsed: 1273998,
-                    runningSince: null,
-                }
-            ],
+            timers: [],
         };
+    },
+    componentDidMount: function () { // invoked after the component fully rendered
+        this.loadTimersFromServer();
+        setInterval(this.loadTimersFromServer, 5000);
+    },
+    loadTimersFromServer: function () {
+        client.getTimers({
+            success: (data) => {
+                this.setState({timers: data});
+            },
+        });
     },
     handleCreateFormSubmit: function (timer) {
         this.createTimer(timer);
