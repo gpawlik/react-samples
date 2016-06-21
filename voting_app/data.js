@@ -11,7 +11,7 @@ window.Data = (function () {
       url: '#',
       votes: generateVoteCount(),
       submitter_avatar_url: 'images/avatars/daniel.jpg',
-      product_image_url: 'images/products/image-aqua.png',
+      product_image_url: 'images/products/image-aqua.png'
     },
     {
       id: 2,
@@ -20,7 +20,7 @@ window.Data = (function () {
       url: '#',
       votes: generateVoteCount(),
       submitter_avatar_url: 'images/avatars/kristy.png',
-      product_image_url: 'images/products/image-rose.png',
+      product_image_url: 'images/products/image-rose.png'
     },
     {
       id: 3,
@@ -29,7 +29,7 @@ window.Data = (function () {
       url: '#',
       votes: generateVoteCount(),
       submitter_avatar_url: 'images/avatars/veronika.jpg',
-      product_image_url: 'images/products/image-steel.png',
+      product_image_url: 'images/products/image-steel.png'
     },
     {
       id: 4,
@@ -38,7 +38,7 @@ window.Data = (function () {
       url: '#',
       votes: generateVoteCount(),
       submitter_avatar_url: 'images/avatars/molly.png',
-      product_image_url: 'images/products/image-yellow.png',
+      product_image_url: 'images/products/image-yellow.png'
     },
   ];
 
