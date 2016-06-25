@@ -40,8 +40,7 @@ var BookList = React.createClass({
     var selectedBooks = this.state.selectedBooks;
     var index = selectedBooks.indexOf(event.target.value);
 
-    if (event.target.checked) {
-      if (index === -1)
+    if (event.target.checked && index === -1) {      
         selectedBooks.push(event.target.value);
     } else {
       selectedBooks.splice(index, 1);
@@ -80,7 +79,12 @@ var BookList = React.createClass({
 var ShippingDetails = React.createClass({
   getInitialState() {
     return (
-      { fullName: '', contactNumber: '', shippingAddress: '', error: false }
+      { 
+          fullName: '', 
+          contactNumber: '', 
+          shippingAddress: '', 
+          error: false 
+      }
     );
   },
 
@@ -264,12 +268,8 @@ var Success = React.createClass({
     }
     return (
       <div>
-        <h2>
-          Thank you for shopping with us {this.props.data.fullName}.
-        </h2>
-        <h4>
-          You will soon get {this.props.data.selectedBooks.join(", ")} at {this.props.data.shippingAddress} in approrximately {numberOfDays} days.
-        </h4>
+        <h2>Thank you for shopping with us {this.props.data.fullName}.</h2>
+        <h4>You will soon get {this.props.data.selectedBooks.join(", ")} at {this.props.data.shippingAddress} in approrximately {numberOfDays} days.</h4>
       </div>
     );
   }
